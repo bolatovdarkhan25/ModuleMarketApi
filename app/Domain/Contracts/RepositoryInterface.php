@@ -49,14 +49,6 @@ interface RepositoryInterface
     public function delete(int $id);
 
     /**
-     * @param int   $id
-     * @param array $columns
-     *
-     * @return mixed
-     */
-    public function find(int $id, array $columns = ['*']);
-
-    /**
      * @param string $field
      * @param mixed  $value
      * @param array  $columns
@@ -67,18 +59,31 @@ interface RepositoryInterface
 
     /**
      * @param string $field
-     * @param mixed  $value
-     * @param array  $columns
-     *
+     * @param array $values
+     * @param array $columns
+     * @return mixed
+     */
+    public function findAllByColumnInValues(string $field, array $values, array $columns = ['*']);
+
+    /**
+     * @param array $where
+     * @param array $columns
+     * @return mixed
+     */
+    public function findByMultipleConditions(array $where, array $columns = ['*']);
+
+    /**
+     * @param array $where
+     * @param array $columns
+     * @return mixed
+     */
+    public function findAllByMultipleConditions(array $where, array $columns = ['*']);
+
+    /**
+     * @param string $field
+     * @param $value
+     * @param array $columns
      * @return mixed
      */
     public function findAllBy(string $field, $value, array $columns = ['*']);
-
-    /**
-     * @param mixed $where
-     * @param array $columns
-     *
-     * @return mixed
-     */
-    public function findWhere($where, array $columns = ['*']);
 }

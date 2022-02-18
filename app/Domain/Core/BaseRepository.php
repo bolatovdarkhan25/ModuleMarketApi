@@ -80,12 +80,7 @@ abstract class BaseRepository implements RepositoryInterface
         return $this->model->destroy($id);
     }
 
-    public function findById(int $id, array $columns = ['*'])
-    {
-        return $this->model->find($id, $columns);
-    }
-
-    public function findByColumn(string $field, $value, array $columns = ['*'])
+    public function findBy(string $field, $value, array $columns = ['*'])
     {
         return $this->model->where($field, '=', $value)
                            ->first($columns)
@@ -119,37 +114,6 @@ abstract class BaseRepository implements RepositoryInterface
         return $this->model->where($field, '=', $value)
                            ->get($columns)
             ;
-    }
-
-    public function findWhere($where, array $columns = ['*'], $or = false)
-    {
-        $model = $this->model;
-
-        foreach ($where as $field => $value) {
-            if ($value instanceof Closure) {
-                $model = (!$or)
-                    ? $model->where($value)
-                    : $model->orWhere($value);
-            } elseif (is_array($value)) {
-                if (count($value) === 3) {
-                    [$field, $operator, $search] = $value;
-                    $model = (!$or)
-                        ? $model->where($field, $operator, $search)
-                        : $model->orWhere($field, $operator, $search);
-                } elseif (count($value) === 2) {
-                    [$field, $search] = $value;
-                    $model = (!$or)
-                        ? $model->where($field, '=', $search)
-                        : $model->orWhere($field, '=', $search);
-                }
-            } else {
-                $model = (!$or)
-                    ? $model->where($field, '=', $value)
-                    : $model->orWhere($field, '=', $value);
-            }
-        }
-
-        return $model->get($columns);
     }
 
     /**
