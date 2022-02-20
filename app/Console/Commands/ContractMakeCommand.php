@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Facades\App;
 
 class ContractMakeCommand extends GeneratorCommand
 {
@@ -12,7 +13,7 @@ class ContractMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'make:contract';
+    protected $signature = 'make:contract {name} {--m|model : Is this contract for model}';
 
     /**
      * The console command description.
@@ -34,19 +35,42 @@ class ContractMakeCommand extends GeneratorCommand
      */
     public function handle()
     {
-        if (parent::handle() === false && ! $this->option('force')) {
+        if (parent::handle() === false && !$this->option('force')) {
             return;
         }
 
-        $name = $this->getNameInput();
+        $isModel = $this->option('model');
 
-//        $isModel = $this->input->getOption('model');
-
-        dd($name);
+        if ($isModel) {
+            $this->info('Don\'t forget to assign to $fillable variable in model ' .
+                'the FILLABLES_LIST const from brand new contract 😉');
+        }
     }
 
-    protected function getStub()
+    protected function getDefaultNamespace($rootNamespace): string
     {
-        // TODO: Implement getStub() method.
+        if ($this->option('model')) {
+            return is_dir($this->laravel->basePath('app/Domain/Contracts/Model'))
+                ? $rootNamespace.'\\Domain\\Contracts\\Model'
+                : $rootNamespace;
+        } else {
+            return is_dir($this->laravel->basePath('app/Domain/Contracts'))
+                ? $rootNamespace . '\\Domain\\Contracts'
+                : $rootNamespace;
+        }
+    }
+
+    protected function getStub(): string
+    {
+        $stub = $this->option('model') ? '/stubs/contract.model.stub' : '/stubs/contract.stub';
+
+        return App::basePath() . $stub;
+    }
+
+    protected function replaceClass($stub, $name): string
+    {
+        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+
+        return str_replace('DummyInterface', $class, $stub);
     }
 }

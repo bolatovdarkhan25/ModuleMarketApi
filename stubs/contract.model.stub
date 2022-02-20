@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Domain\Contracts\Model;
+
+interface DummyInterface
+{
+    public const TABLE_NAME = '';
+    public const FILLABLES_LIST = [];
+}
+

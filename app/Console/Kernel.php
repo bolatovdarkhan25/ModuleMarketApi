@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Console\Commands\ContractMakeCommand;
 use App\Console\Commands\CreateGoodsModelsCommand;
 use App\Console\Commands\ModelMakeCommand;
+use App\Console\Commands\RepositoryMakeCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -18,7 +19,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         CreateGoodsModelsCommand::class,
         ModelMakeCommand::class,
-        ContractMakeCommand::class
+        ContractMakeCommand::class,
+        RepositoryMakeCommand::class
     ];
 
     /**

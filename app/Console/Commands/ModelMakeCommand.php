@@ -40,7 +40,7 @@ class ModelMakeCommand extends GeneratorCommand
      */
     public function handle()
     {
-        if (parent::handle() === false && ! $this->option('force')) {
+        if (parent::handle() === false && !$this->option('force')) {
             return;
         }
 
@@ -50,7 +50,7 @@ class ModelMakeCommand extends GeneratorCommand
             $this->input->setOption('migration', true);
             $this->input->setOption('controller', true);
             $this->input->setOption('resource', true);
-            $this->input->setOption('digital', true);
+            $this->input->setOption('boost', true);
         }
 
         if ($this->option('factory')) {
@@ -69,7 +69,7 @@ class ModelMakeCommand extends GeneratorCommand
             $this->createController();
         }
 
-        if ($this->option('digital')) {
+        if ($this->option('boost')) {
             $this->createContract();
             $this->createRepository();
         }
@@ -141,9 +141,31 @@ class ModelMakeCommand extends GeneratorCommand
         ]));
     }
 
+    /**
+     * @return void
+     */
     private function createContract()
     {
-        $contractName = Str::studly(class_basename($this->argument('name'))) . 'Contract'; // TODO complete
+        $contractName = Str::studly(class_basename($this->argument('name'))) . 'Contract';
+
+        $this->call("make:contract", [
+            'name'  => $contractName,
+            '-m'    => true
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    private function createRepository()
+    {
+        $modelName      = Str::studly(class_basename($this->argument('name')));
+        $repositoryName = $modelName . 'Repository';
+
+        $this->call("make:repository", [
+            'name'    => $repositoryName,
+            '--model' => $modelName
+        ]);
     }
 
     /**
@@ -157,13 +179,19 @@ class ModelMakeCommand extends GeneratorCommand
             ? '/stubs/model.pivot.stub'
             : '/stubs/model.stub';
 
-        $isTemp  = $this->option('temp');
+        $isTemp    = $this->option('temp');
+        $isBoosted = $this->option('boost');
 
         $service = new MakeModelCommandService();
 
-        $service->relocateStubFiles($isTemp);
+        $service->relocateStubFiles($isTemp, $isBoosted); // TODO при создании миграции добавить контракты
 
-        return App::basePath() . $stub;
+        if ($isBoosted) {
+            return App::basePath() . $stub;
+        } else {
+            return 'vendor/flipbox/lumen-generator/src/LumenGenerator/Console' . $stub;
+        }
+
     }
 
     /**
@@ -188,13 +216,13 @@ class ModelMakeCommand extends GeneratorCommand
     protected function getOptions(): array
     {
         return [
-            ['all', 'a', InputOption::VALUE_NONE, 'Generate a migration, seeder, factory, and resource controller for the model'],
+            ['all', 'a', InputOption::VALUE_NONE, 'Generate a migration, seeder, factory, resource controller, contract and repository for the model'],
             ['controller', 'c', InputOption::VALUE_NONE, 'Create a new controller for the model'],
             ['factory', 'f', InputOption::VALUE_NONE, 'Create a new factory for the model'],
             ['force', null, InputOption::VALUE_NONE, 'Create the class even if the model already exists'],
             ['migration', 'm', InputOption::VALUE_NONE, 'Create a new migration file for the model'],
             ['seed', 's', InputOption::VALUE_NONE, 'Create a new seeder file for the model'],
-            ['digital', 'd', InputOption::VALUE_NONE, 'Create a new contract and repository file for the model'],
+            ['boost', 'b', InputOption::VALUE_NONE, 'Create a new contract and repository file for the model'],
             ['pivot', 'p', InputOption::VALUE_NONE, 'Indicates if the generated model should be a custom intermediate table model'],
             ['resource', 'r', InputOption::VALUE_NONE, 'Indicates if the generated controller should be a resource controller'],
             ['api', null, InputOption::VALUE_NONE, 'Indicates if the generated controller should be an API controller'],

@@ -38,7 +38,7 @@ class CreateGoodsModelsCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return int|void
      */
     public function handle(GroupRepository $groupRepository)
     {
@@ -64,7 +64,7 @@ class CreateGoodsModelsCommand extends Command
                     ]);
 
                     $modelName = ucfirst($prefix) . 'Good';
-                    $this->call("make:model $modelName -tm");
+                    $this->call("make:model $modelName -tmb");
                 }
 
                 DB::commit();

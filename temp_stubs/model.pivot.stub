@@ -2,10 +2,10 @@
 
 namespace DummyNamespace;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use App\Domain\Contracts\Model\DummyClassContract;
 
-class DummyClass extends Model
+class DummyClass extends Pivot
 {
     protected $fillable = DummyClassContract::FILLABLES_LIST;
 }
