@@ -103,10 +103,17 @@ class ModelMakeCommand extends GeneratorCommand
             $table = Str::singular($table);
         }
 
-        $this->call('make:migration', [
-            'name' => "create_{$table}_table",
-            '--create' => $table,
-        ]);
+        $args = ['name' => "create_{$table}_table", '--create' => $table];
+
+        if ($this->option('boost')) {
+            $args['--contract'] = Str::studly(class_basename($this->argument('name'))) . 'Contract';
+        }
+
+        if ($this->option('temp')) {
+            $args['--temp'] = true;
+        }
+
+        $this->call('make:migration', $args);
     }
 
     /**
@@ -148,10 +155,13 @@ class ModelMakeCommand extends GeneratorCommand
     {
         $contractName = Str::studly(class_basename($this->argument('name'))) . 'Contract';
 
-        $this->call("make:contract", [
-            'name'  => $contractName,
-            '-m'    => true
-        ]);
+        $args = ['name' => $contractName, '-m' => true];
+
+        if ($this->option('temp')) {
+            $args['-t'] = true;
+        }
+
+        $this->call("make:contract", $args);
     }
 
     /**
@@ -179,12 +189,11 @@ class ModelMakeCommand extends GeneratorCommand
             ? '/stubs/model.pivot.stub'
             : '/stubs/model.stub';
 
-        $isTemp    = $this->option('temp');
         $isBoosted = $this->option('boost');
 
         $service = new MakeModelCommandService();
 
-        $service->relocateStubFiles($isTemp, $isBoosted); // TODO при создании миграции добавить контракты
+        $service->relocateStubFiles($isBoosted);
 
         if ($isBoosted) {
             return App::basePath() . $stub;
@@ -226,7 +235,7 @@ class ModelMakeCommand extends GeneratorCommand
             ['pivot', 'p', InputOption::VALUE_NONE, 'Indicates if the generated model should be a custom intermediate table model'],
             ['resource', 'r', InputOption::VALUE_NONE, 'Indicates if the generated controller should be a resource controller'],
             ['api', null, InputOption::VALUE_NONE, 'Indicates if the generated controller should be an API controller'],
-            ['temp', 't', InputOption::VALUE_NONE, 'Indicates if the model and migration should be created by custom stubs'],
+            ['temp', 't', InputOption::VALUE_NONE, 'Don\'t use this manually!'], // TODO temporary
         ];
     }
 }

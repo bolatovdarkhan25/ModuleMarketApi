@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\ContractMakeCommand;
 use App\Console\Commands\CreateGoodsModelsCommand;
+use App\Console\Commands\MigrationMakeCommand;
 use App\Console\Commands\ModelMakeCommand;
 use App\Console\Commands\RepositoryMakeCommand;
 use Illuminate\Console\Scheduling\Schedule;
@@ -20,7 +21,8 @@ class Kernel extends ConsoleKernel
         CreateGoodsModelsCommand::class,
         ModelMakeCommand::class,
         ContractMakeCommand::class,
-        RepositoryMakeCommand::class
+        RepositoryMakeCommand::class,
+        MigrationMakeCommand::class
     ];
 
     /**

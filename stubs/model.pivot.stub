@@ -1,0 +1,11 @@
+<?php
+
+namespace DummyNamespace;
+
+use Illuminate\Database\Eloquent\Relations\Pivot;
+use App\Domain\Contracts\Model\DummyClassContract;
+
+class DummyClass extends Pivot
+{
+    protected $fillable = DummyClassContract::FILLABLES_LIST;
+}

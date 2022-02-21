@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Domain\Contracts\Model\{{ contract }};
 
 class {{ class }} extends Migration
 {
@@ -13,8 +14,11 @@ class {{ class }} extends Migration
      */
     public function up()
     {
-        Schema::create('{{ table }}', function (Blueprint $table) {
-            $table->id();
+        Schema::create({{ contract }}::TABLE_NAME, function (Blueprint $table) {
+            $table->id({{ contract }}::FIELD_ID);
+            $table->string({{ contract }}::FIELD_NAME);
+            $table->decimal({{ contract }}::FIELD_PRICE, 12, 2);
+            $table->boolean({{ contract }}::FIELD_IS_AVAILABLE)->default(true);
             $table->timestamps();
         });
     }
@@ -26,6 +30,6 @@ class {{ class }} extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('{{ table }}');
+        Schema::dropIfExists({{ contract }}::TABLE_NAME);
     }
 }

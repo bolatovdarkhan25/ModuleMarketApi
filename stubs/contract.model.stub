@@ -5,6 +5,9 @@ namespace App\Domain\Contracts\Model;
 interface DummyInterface
 {
     public const TABLE_NAME = '';
+
+    public const FIELD_ID = 'id';
+
     public const FILLABLES_LIST = [];
 }
 

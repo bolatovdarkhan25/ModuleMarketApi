@@ -13,7 +13,7 @@ class ContractMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'make:contract {name} {--m|model : Is this contract for model}';
+    protected $signature = 'make:contract {name} {--m|model : Is this contract for model} {--t|temp : Is temporary}';
 
     /**
      * The console command description.
@@ -62,7 +62,15 @@ class ContractMakeCommand extends GeneratorCommand
 
     protected function getStub(): string
     {
-        $stub = $this->option('model') ? '/stubs/contract.model.stub' : '/stubs/contract.stub';
+        if ($this->option('model')) {
+            if ($this->option('temp')) {
+                $stub = '/stubs/contract.model.temp.stub';
+            } else {
+                $stub = '/stubs/contract.model.stub';
+            }
+        } else {
+            $stub = '/stubs/contract.stub';
+        }
 
         return App::basePath() . $stub;
     }
