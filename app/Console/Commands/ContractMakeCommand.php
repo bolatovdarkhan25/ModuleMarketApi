@@ -13,7 +13,10 @@ class ContractMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'make:contract {name} {--m|model : Is this contract for model} {--t|temp : Is temporary}';
+    protected $signature = 'make:contract {name}
+     {--m|model : Is this contract for model}
+     {--t|temp : Is temporary}
+     {--table= : Table name}';
 
     /**
      * The console command description.
@@ -77,8 +80,10 @@ class ContractMakeCommand extends GeneratorCommand
 
     protected function replaceClass($stub, $name): string
     {
+        $tableName = (string) $this->option('table');
+
         $class = str_replace($this->getNamespace($name).'\\', '', $name);
 
-        return str_replace('DummyInterface', $class, $stub);
+        return str_replace(['DummyInterface', '{{ table }}'], [$class, $tableName], $stub);
     }
 }

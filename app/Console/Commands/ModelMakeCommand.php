@@ -161,6 +161,10 @@ class ModelMakeCommand extends GeneratorCommand
             $args['-t'] = true;
         }
 
+        if ($this->option('migration')) {
+            $args['--table'] = Str::snake(Str::pluralStudly(class_basename($this->argument('name'))));
+        }
+
         $this->call("make:contract", $args);
     }
 

@@ -26,16 +26,6 @@ class CreateGoodsModelsCommand extends Command
     protected $description = 'Creates migration for goods by groups';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return int|void
@@ -63,8 +53,12 @@ class CreateGoodsModelsCommand extends Command
                         GroupContract::FIELD_NAME   => $name
                     ]);
 
-                    $modelName = ucfirst($prefix) . 'Good';
-                    $this->call("make:model $modelName -tmb");
+                    $this->call("make:model", [
+                        'name'        => ucfirst($prefix) . 'Good',
+                        '--temp'      => true,
+                        '--migration' => true,
+                        '--boost'     => true
+                    ]);
                 }
 
                 DB::commit();

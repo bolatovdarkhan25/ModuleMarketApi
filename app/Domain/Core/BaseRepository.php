@@ -16,7 +16,7 @@ abstract class BaseRepository implements RepositoryInterface
 {
     private Container $container;
 
-    protected Builder $model;
+    protected $model;
 
     protected $newModel;
 

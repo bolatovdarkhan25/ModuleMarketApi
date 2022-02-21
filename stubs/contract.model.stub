@@ -4,7 +4,7 @@ namespace App\Domain\Contracts\Model;
 
 interface DummyInterface
 {
-    public const TABLE_NAME = '';
+    public const TABLE_NAME = '{{ table }}';
 
     public const FIELD_ID = 'id';
 
