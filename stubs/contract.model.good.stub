@@ -11,6 +11,10 @@ interface DummyInterface
     public const FIELD_PRICE        = 'price';
     public const FIELD_IS_AVAILABLE = 'is_available';
 
-    public const FILLABLES_LIST = [];
+    public const FILLABLES_LIST = [
+        self::FIELD_NAME,
+        self::FIELD_PRICE,
+        self::FIELD_IS_AVAILABLE
+    ];
 }
 

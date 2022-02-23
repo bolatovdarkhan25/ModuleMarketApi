@@ -28,49 +28,47 @@ class CreateGoodsModelsCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return int|void
+     * @return int
      */
-    public function handle(GroupRepository $groupRepository)
+    public function handle(GroupRepository $groupRepository): int
     {
-        if (config('app.env') === 'local') {
-            DB::beginTransaction();
+        DB::beginTransaction();
 
-            try {
-                $data     = collect(GroupContract::SEEDER_DATA);
-                $prefixes = $data->keys()->toArray();
+        try {
+            $data     = collect(GroupContract::SEEDER_DATA);
+            $prefixes = $data->keys()->toArray();
 
-                $existedPrefixes = $groupRepository->findAllByColumnInValues(
-                    GroupContract::FIELD_PREFIX,
-                    $prefixes,
-                    [GroupContract::FIELD_PREFIX]
-                )->pluck(GroupContract::FIELD_PREFIX);
+            $existedPrefixes = $groupRepository->findAllByColumnInValues(
+                GroupContract::FIELD_PREFIX,
+                $prefixes,
+                [GroupContract::FIELD_PREFIX]
+            )->pluck(GroupContract::FIELD_PREFIX);
 
-                $filteredData = $data->except($existedPrefixes);
+            $filteredData = $data->except($existedPrefixes);
 
-                foreach ($filteredData as $prefix => $name) {
-                    $groupRepository->create([
-                        GroupContract::FIELD_PREFIX => $prefix,
-                        GroupContract::FIELD_NAME   => $name
-                    ]);
+            foreach ($filteredData as $prefix => $name) {
+                $groupRepository->create([
+                    GroupContract::FIELD_PREFIX => $prefix,
+                    GroupContract::FIELD_NAME   => $name
+                ]);
 
-                    $this->call("make:model", [
-                        'name'        => ucfirst($prefix) . 'Good',
-                        '--temp'      => true,
-                        '--migration' => true,
-                        '--boost'     => true
-                    ]);
-                }
-
-                DB::commit();
-            } catch (Throwable $exception) {
-                DB::rollBack();
-
-                Log::error($exception->getMessage(), ['trace' => $exception->getTrace()]);
-
-                $this->error('Ошибка');
+                $this->call("make:model", [
+                    'name'        => ucfirst($prefix) . 'Good',
+                    '--type'      => 'good',
+                    '--migration' => true,
+                    '--boost'     => true
+                ]);
             }
-        } else {
-            return 0;
+
+            DB::commit();
+        } catch (Throwable $exception) {
+            DB::rollBack();
+
+            Log::error($exception->getMessage(), ['trace' => $exception->getTrace()]);
+
+            $this->error('Ошибка');
         }
+
+        return 1;
     }
 }

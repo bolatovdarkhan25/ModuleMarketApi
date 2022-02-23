@@ -35,8 +35,6 @@ class CreateGroupCategorySubcategoriesTable extends Migration
                 ->references(SubcategoryContract::FIELD_ID)
                 ->on(SubcategoryContract::TABLE_NAME)
                 ->onDelete('cascade');
-
-            $table->timestamps();
         });
     }
 

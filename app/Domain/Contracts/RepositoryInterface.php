@@ -2,29 +2,25 @@
 
 namespace App\Domain\Contracts;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+
 interface RepositoryInterface
 {
     /**
      * @param array $columns
      *
-     * @return mixed
+     * @return Collection|Builder[]
      */
-    public function all(array $columns = ['*']);
-
-    /**
-     * @param int   $perPage
-     * @param array $columns
-     *
-     * @return mixed
-     */
-    public function paginate(int $perPage = 1, array $columns = ['*']);
+    public function all(array $columns = ['*']): Collection|array;
 
     /**
      * @param array $data
      *
-     * @return mixed
+     * @return Model|Builder
      */
-    public function create(array $data);
+    public function create(array $data): Model|Builder;
 
     /**
      * @param array $data
@@ -35,11 +31,12 @@ interface RepositoryInterface
 
     /**
      * @param array $data
-     * @param int   $id
+     * @param mixed $value
+     * @param string $attribute
      *
-     * @return mixed
+     * @return int
      */
-    public function update(array $data, int $id);
+    public function update(array $data, mixed $value, string $attribute = 'id'): int;
 
     /**
      * @param int $id

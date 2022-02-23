@@ -33,7 +33,7 @@ class MigrationCreatorService extends MigrationCreator
             $this->getClassName($name), $stub
         );
 
-        if ($stubType === 'common' || $stubType === 'temp') {
+        if (in_array($stubType, ['common', 'good', 'char'])) {
             if (! is_null($table)) {
                 $stub = str_replace(
                     ['DummyTable', '{{ table }}', '{{table}}'],
@@ -60,22 +60,11 @@ class MigrationCreatorService extends MigrationCreator
         return file_exists($appStubPath . '/migration.create.stub') ? $appStubPath : $libStubPath;
     }
 
-    protected function getStub($table, $create, string $stubType = '')
+    protected function getStub($table, $create, string $stubType = ''): string
     {
         $makeMigrationService = new MakeMigrationCommandService();
 
-        $isTemp  = false;
-        $boosted = false;
-
-        if ($stubType === 'temp' || $stubType === 'temp_boosted') {
-            $isTemp = true;
-        }
-
-        if ($stubType === 'temp_boosted' || $stubType === 'boosted') {
-            $boosted = true;
-        }
-
-        $makeMigrationService->relocateStubFiles($isTemp, $boosted);
+        $makeMigrationService->relocateStubFiles($stubType);
 
         return parent::getStub($table, $create);
     }

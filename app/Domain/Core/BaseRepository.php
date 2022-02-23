@@ -4,7 +4,6 @@ namespace App\Domain\Core;
 
 use App\Domain\Contracts\RepositoryInterface;
 use App\Domain\Core\Exceptions\RepositoryException;
-use Closure;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,9 +15,7 @@ abstract class BaseRepository implements RepositoryInterface
 {
     private Container $container;
 
-    protected $model;
-
-    protected $newModel;
+    protected Model $model;
 
     /**
      * @throws BindingResolutionException
@@ -30,33 +27,19 @@ abstract class BaseRepository implements RepositoryInterface
     ) {
         $this->container = $container;
 
-        $this->makeModel();
+        $this->assignModel();
     }
 
     public abstract function model();
 
     public function all(array $columns = ['*']): Collection
     {
-        return $this->model->get($columns);
+        return $this->model->newQuery()->get($columns);
     }
 
-    public function with(array $relations): BaseRepository
+    public function create(array $data): Model|Builder
     {
-        $this->model = $this->model->with($relations);
-
-        return $this;
-    }
-
-    public function paginate(int $perPage = 25, array $columns = ['*'], $method = 'full')
-    {
-        $paginationMethod = $method !== 'full' ? 'simplePaginate' : 'paginate';
-
-        return $this->model->$paginationMethod($perPage, $columns);
-    }
-
-    public function create(array $data)
-    {
-        return $this->model->create($data);
+        return $this->model->newQuery()->create($data);
     }
 
     public function saveModel(array $data): bool
@@ -68,11 +51,9 @@ abstract class BaseRepository implements RepositoryInterface
         return $this->model->save();
     }
 
-    public function update(array $data, $id, $attribute = 'id')
+    public function update(array $data, mixed $value, string $attribute = 'id'): int
     {
-        return $this->model->where($attribute, '=', $id)
-                           ->update($data)
-            ;
+        return $this->model->newQuery()->where($attribute, '=', $value)->update($data);
     }
 
     public function delete(int $id)
@@ -82,82 +63,55 @@ abstract class BaseRepository implements RepositoryInterface
 
     public function findBy(string $field, $value, array $columns = ['*'])
     {
-        return $this->model->where($field, '=', $value)
-                           ->first($columns)
-            ;
+        return $this->model->newQuery()->where($field, '=', $value)->first($columns);
     }
 
     public function findAllByColumnInValues(string $field, array $values, array $columns = ['*'])
     {
-        return $this->model->whereIn($field, $values)
-                           ->get($columns)
-            ;
+        return $this->model->newQuery()->whereIn($field, $values)->get($columns);
     }
 
     public function findByMultipleConditions(array $where, array $columns = ['*'])
     {
-        return $this->model->where($where)
-                           ->first($columns)
-            ;
+        return $this->model->newQuery()->where($where)->first($columns);
     }
 
     public function findAllByMultipleConditions(array $where, array $columns = ['*'])
     {
-        return $this->model->where($where)
-                           ->get($columns)
-            ;
+        return $this->model->newQuery()->where($where)->get($columns);
     }
 
     public function findAllBy(string $field, $value, array $columns = ['*'])
     {
-
-        return $this->model->where($field, '=', $value)
-                           ->get($columns)
-            ;
+        return $this->model->newQuery()->where($field, '=', $value)->get($columns);
     }
 
     /**
      * @throws BindingResolutionException
      * @throws RepositoryException
      */
-    public function makeModel()
+    protected function assignModel(): void
     {
-        return $this->setModel($this->model());
+        $this->setModel($this->model());
     }
 
     /**
      * @throws BindingResolutionException
      * @throws RepositoryException
      */
-    public function setModel($eloquentModel)
+    protected function setModel($eloquentModel): void
     {
-        $this->newModel = $this->container->make($eloquentModel);
+        $model = $this->container->make($eloquentModel);
 
-        if (!$this->newModel instanceof Model) {
-            throw new RepositoryException("Class $this->newModel must be an instance of " . Model::class);
+        if (!$model instanceof Model) {
+            throw new RepositoryException("Class $model must be an instance of " . Model::class);
         }
 
-        return $this->model = $this->newModel;
+        $this->model = $model;
     }
 
     public function getModel(): Model
     {
-        return $this->newModel;
+        return $this->model;
     }
-
-//    /**
-//     * @param string $input
-//     * @param string $field
-//     * @param int $precision
-//     *
-//     * @return Builder
-//     */
-//    public function searchWithTypos(string $input, string $field, int $precision = 3): Builder
-//    {
-//        return $this
-//            ->model
-//            ->query()
-//            ->whereRaw('levenshtein(\'' . $input . '\', ' . $field . ') <= ' . $precision)
-//            ;
-//    }
 }
