@@ -7,14 +7,16 @@ interface DummyInterface
     public const TABLE_NAME = '{{ table }}';
 
     public const FIELD_ID            = 'id';
-    public const FIELD_PREFIX        = 'prefix';
+    public const FIELD_GROUP_ID      = 'group_id';
     public const FIELD_GOOD_ID       = 'good_id';
     public const FIELD_CHAR_VALUE_ID = 'characteristic_value_id';
+    public const FIELD_VALUE         = 'value';
 
     public const FILLABLES_LIST = [
-        self::FIELD_PREFIX,
+        self::FIELD_GROUP_ID,
         self::FIELD_GOOD_ID,
-        self::FIELD_CHAR_VALUE_ID
+        self::FIELD_CHAR_VALUE_ID,
+        self::FIELD_VALUE
     ];
 }
 

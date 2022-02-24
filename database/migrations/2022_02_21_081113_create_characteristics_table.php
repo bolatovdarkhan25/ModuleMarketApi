@@ -19,6 +19,7 @@ class CreateCharacteristicsTable extends Migration
             $table->string(CharacteristicContract::FIELD_PREFIX)->unique();
             $table->string(CharacteristicContract::FIELD_NAME);
             $table->string(CharacteristicContract::FIELD_DATA_TYPE);
+            $table->boolean(CharacteristicContract::FIELD_COMMON)->default(false);
             $table->timestamps();
         });
     }

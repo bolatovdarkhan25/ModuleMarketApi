@@ -30,21 +30,31 @@ class CreateGoodCharacteristicsCommand extends Command
      * Execute the console command.
      *
      * @param CreateGoodCharacteristicsCommandService $service
+     * @param CharacteristicRepository $characteristicRepository
      * @return int
      * @throws Throwable
      */
-    public function handle(CreateGoodCharacteristicsCommandService $service): int
-    {
+    public function handle(
+        CreateGoodCharacteristicsCommandService $service,
+        CharacteristicRepository $characteristicRepository
+    ): int {
         $data = collect(CharacteristicContract::SEEDER_DATA);
+        $prefixes = $data->keys()->toArray();
+        $prefixesAndDataTypes = $characteristicRepository->findAllByColumnInValues(
+            CharacteristicContract::FIELD_PREFIX,
+            $prefixes,
+            [CharacteristicContract::FIELD_PREFIX, CharacteristicContract::FIELD_DATA_TYPE]
+        );
 
         DB::beginTransaction();
 
         try {
-            foreach ($data as $prefix => $name) {
+            foreach ($prefixesAndDataTypes as $prefix => $dataType) {
                 $modelName = $service->convertPrefixToModelName(Str::singular($prefix));
                 $this->call('make:model', [
                     'name'        => $modelName,
                     '--type'      => 'char',
+                    '--data_type' => $dataType,
                     '--migration' => true,
                     '--boost'     => true
                 ]);

@@ -32,58 +32,63 @@ abstract class BaseRepository implements RepositoryInterface
 
     public abstract function model();
 
+    public function query(): Builder
+    {
+        return $this->getModel()->newQuery();
+    }
+
     public function all(array $columns = ['*']): Collection
     {
-        return $this->model->newQuery()->get($columns);
+        return $this->getModel()->newQuery()->get($columns);
     }
 
     public function create(array $data): Model|Builder
     {
-        return $this->model->newQuery()->create($data);
+        return $this->getModel()->newQuery()->create($data);
     }
 
     public function saveModel(array $data): bool
     {
         foreach ($data as $key => $value) {
-            $this->model->$key = $value;
+            $this->getModel()->$key = $value;
         }
 
-        return $this->model->save();
+        return $this->getModel()->save();
     }
 
     public function update(array $data, mixed $value, string $attribute = 'id'): int
     {
-        return $this->model->newQuery()->where($attribute, '=', $value)->update($data);
+        return $this->getModel()->newQuery()->where($attribute, '=', $value)->update($data);
     }
 
     public function delete(int $id)
     {
-        return $this->model->destroy($id);
+        return $this->getModel()->destroy($id);
     }
 
     public function findBy(string $field, $value, array $columns = ['*'])
     {
-        return $this->model->newQuery()->where($field, '=', $value)->first($columns);
+        return $this->getModel()->newQuery()->where($field, '=', $value)->first($columns);
     }
 
     public function findAllByColumnInValues(string $field, array $values, array $columns = ['*'])
     {
-        return $this->model->newQuery()->whereIn($field, $values)->get($columns);
+        return $this->getModel()->newQuery()->whereIn($field, $values)->get($columns);
     }
 
     public function findByMultipleConditions(array $where, array $columns = ['*'])
     {
-        return $this->model->newQuery()->where($where)->first($columns);
+        return $this->getModel()->newQuery()->where($where)->first($columns);
     }
 
     public function findAllByMultipleConditions(array $where, array $columns = ['*'])
     {
-        return $this->model->newQuery()->where($where)->get($columns);
+        return $this->getModel()->newQuery()->where($where)->get($columns);
     }
 
     public function findAllBy(string $field, $value, array $columns = ['*'])
     {
-        return $this->model->newQuery()->where($field, '=', $value)->get($columns);
+        return $this->getModel()->newQuery()->where($field, '=', $value)->get($columns);
     }
 
     /**

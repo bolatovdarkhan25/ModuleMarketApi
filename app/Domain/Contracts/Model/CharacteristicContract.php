@@ -10,11 +10,13 @@ interface CharacteristicContract
     public const FIELD_PREFIX    = 'prefix';
     public const FIELD_NAME      = 'name';
     public const FIELD_DATA_TYPE = 'data_type';
+    public const FIELD_COMMON    = 'common';
 
     public const FILLABLES_LIST = [
         self::FIELD_PREFIX,
         self::FIELD_NAME,
-        self::FIELD_DATA_TYPE
+        self::FIELD_DATA_TYPE,
+        self::FIELD_COMMON
     ];
 
     public const SEEDER_DATA = [

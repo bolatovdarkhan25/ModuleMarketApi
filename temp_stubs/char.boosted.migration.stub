@@ -3,7 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Domain\Contracts\Models\CharacteristicValueContract;
+use App\Domain\Contracts\Model\GroupContract;
+use App\Domain\Contracts\Model\CharacteristicValueContract;
+use App\Domain\Contracts\Model\{{ contract }};
 
 class {{ class }} extends Migration
 {
@@ -16,13 +18,20 @@ class {{ class }} extends Migration
     {
         Schema::create({{ contract }}::TABLE_NAME, function (Blueprint $table) {
             $table->id({{ contract }}::FIELD_ID);
-            $table->string({{ contract }}::FIELD_PREFIX);
+            $table->foreignId({{ contract }}::FIELD_GROUP_ID);
             $table->foreignId({{ contract }}::FIELD_GOOD_ID);
-            $table->foreignId({{ contract }}::FIELD_CHAR_VALUE_ID);
+            $table->foreignId({{ contract }}::FIELD_CHAR_VALUE_ID)->nullable();
+            $table->{{ data_type }}({{ contract }}::FIELD_VALUE)->nullable();
+
+            $table->foreign({{ contract }}::FIELD_GROUP_ID)
+                ->references(GroupContract::FIELD_ID)
+                ->on(GroupContract::TABLE_NAME)
+                ->onDelete('restrict');
             $table->foreign({{ contract }}::FIELD_CHAR_VALUE_ID)
                 ->references(CharacteristicValueContract::FIELD_ID)
                 ->on(CharacteristicValueContract::TABLE_NAME)
-                ->onDelete('cascade');
+                ->onDelete('restrict');
+
             $table->timestamps();
         });
     }

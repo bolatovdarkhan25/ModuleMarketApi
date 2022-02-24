@@ -7,8 +7,15 @@ use Illuminate\Support\Facades\App;
 
 class MigrationCreatorService extends MigrationCreator
 {
-    public function create($name, $path, $table = null, $create = false, string $stubType = '', string $contract = ''): string
-    {
+    public function create(
+        $name,
+        $path,
+        $table = null,
+        $create = false,
+        string $stubType = '',
+        string $contract = '',
+        string $dataType = ''
+    ): string {
         $this->ensureMigrationDoesntAlreadyExist($name, $path);
 
         $stub = $this->getStub($table, $create, $stubType);
@@ -18,7 +25,7 @@ class MigrationCreatorService extends MigrationCreator
         $this->files->ensureDirectoryExists(dirname($path));
 
         $this->files->put(
-            $path, $this->populateStub($name, $stub, $table, $stubType, $contract)
+            $path, $this->populateStub($name, $stub, $table, $stubType, $contract, $dataType)
         );
 
         $this->firePostCreateHooks($table);
@@ -26,12 +33,20 @@ class MigrationCreatorService extends MigrationCreator
         return $path;
     }
 
-    protected function populateStub($name, $stub, $table, string $stubType = '', string $contract = ''): string
-    {
+    protected function populateStub(
+        $name,
+        $stub,
+        $table,
+        string $stubType = '',
+        string $contract = '',
+        string $dataType = ''
+    ): string {
         $stub = str_replace(
             ['DummyClass', '{{ class }}', '{{class}}'],
             $this->getClassName($name), $stub
         );
+
+        $stub = str_replace(['{{ data_type }}'], $dataType, $stub);
 
         if (in_array($stubType, ['common', 'good', 'char'])) {
             if (! is_null($table)) {
