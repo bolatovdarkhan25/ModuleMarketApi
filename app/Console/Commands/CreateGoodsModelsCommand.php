@@ -29,6 +29,7 @@ class CreateGoodsModelsCommand extends Command
      * Execute the console command.
      *
      * @return int
+     * @throws Throwable
      */
     public function handle(GroupRepository $groupRepository): int
     {
@@ -64,9 +65,7 @@ class CreateGoodsModelsCommand extends Command
         } catch (Throwable $exception) {
             DB::rollBack();
 
-            Log::error($exception->getMessage(), ['trace' => $exception->getTrace()]);
-
-            $this->error('Ошибка');
+            throw new $exception;
         }
 
         return 1;

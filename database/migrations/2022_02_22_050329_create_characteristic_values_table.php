@@ -17,7 +17,7 @@ class CreateCharacteristicValuesTable extends Migration
     {
         Schema::create(CharacteristicValueContract::TABLE_NAME, function (Blueprint $table) {
             $table->id(CharacteristicValueContract::FIELD_ID);
-            $table->string(CharacteristicValueContract::FIELD_VALUE); // TODO как быть с типами данных?
+            $table->string(CharacteristicValueContract::FIELD_VALUE);
             $table->foreignId(CharacteristicValueContract::FIELD_CHARACTERISTIC_ID);
             $table->foreign(CharacteristicValueContract::FIELD_CHARACTERISTIC_ID)
                 ->references(CharacteristicContract::FIELD_ID)

@@ -20,6 +20,7 @@ class CreateGroupCatSubCharacteristicsTable extends Migration
             $table->id(GroupCatSubCharacteristicContract::FIELD_ID);
             $table->foreignId(GroupCatSubCharacteristicContract::FIELD_GROUP_CATEGORY_SUBCATEGORY_ID);
             $table->foreignId(GroupCatSubCharacteristicContract::FIELD_CHARACTERISTIC_ID);
+            $table->string(GroupCatSubCharacteristicContract::FIELD_METRICS)->nullable();
 
             $table->unique([
                 GroupCatSubCharacteristicContract::FIELD_GROUP_CATEGORY_SUBCATEGORY_ID,

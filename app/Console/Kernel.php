@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\ContractMakeCommand;
+use App\Console\Commands\CreateGoodCharacteristicsCommand;
 use App\Console\Commands\CreateGoodsModelsCommand;
 use App\Console\Commands\MigrationMakeCommand;
 use App\Console\Commands\ModelMakeCommand;
@@ -22,7 +23,8 @@ class Kernel extends ConsoleKernel
         ModelMakeCommand::class,
         ContractMakeCommand::class,
         RepositoryMakeCommand::class,
-        MigrationMakeCommand::class
+        MigrationMakeCommand::class,
+        CreateGoodCharacteristicsCommand::class
     ];
 
     /**
