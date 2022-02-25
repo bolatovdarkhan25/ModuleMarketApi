@@ -1,6 +1,6 @@
 <?php
 
-/** @var \Laravel\Lumen\Routing\Router $router */
+/** @var Router $router */
 
 /*
 |--------------------------------------------------------------------------
@@ -13,4 +13,18 @@
 |
 */
 
+use Laravel\Lumen\Routing\Router;
+
 $router->get('/', 'Controller@info');
+
+$router->group(['prefix' => 'goods'], function () use ($router) {
+
+});
+
+$router->group(['prefix' => 'groups'], function () use ($router) {
+    $router->get('', 'GroupController@index');
+});
+
+$router->group(['prefix' => 'categories'], function () use ($router) {
+    $router->get('get-list-by-group-with-subcategories', 'CategoryController@getListByGroupIdWithSubcategories');
+});

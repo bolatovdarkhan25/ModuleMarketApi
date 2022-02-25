@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\App;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
+    use ApiResponse;
+
     /**
      * @OA\Info(
      *   title="Module Marketing Documentation",
