@@ -49,12 +49,12 @@ class CreateGoodCharacteristicsCommand extends Command
         DB::beginTransaction();
 
         try {
-            foreach ($prefixesAndDataTypes as $prefix => $dataType) {
-                $modelName = $service->convertPrefixToModelName(Str::singular($prefix));
+            foreach ($prefixesAndDataTypes as $item) {
+                $modelName = $service->convertPrefixToModelName(Str::singular($item->{CharacteristicContract::FIELD_PREFIX}));
                 $this->call('make:model', [
                     'name'        => $modelName,
                     '--type'      => 'char',
-                    '--data_type' => $dataType,
+                    '--data_type' => $item->{CharacteristicContract::FIELD_DATA_TYPE},
                     '--migration' => true,
                     '--boost'     => true
                 ]);

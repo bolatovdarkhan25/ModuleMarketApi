@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Domain\Contracts\Model\{{ contract }};
+use App\Domain\Contracts\Model\GroupCategorySubcategoryContract;
 
 class {{ class }} extends Migration
 {
@@ -19,6 +20,13 @@ class {{ class }} extends Migration
             $table->string({{ contract }}::FIELD_NAME);
             $table->decimal({{ contract }}::FIELD_PRICE, 12, 2);
             $table->boolean({{ contract }}::FIELD_IS_AVAILABLE)->default(true);
+
+            $table->foreignId({{ contract }}::FIELD_GROUP_CAT_SUB_ID);
+
+            $table->foreign({{ contract }}::FIELD_GROUP_CAT_SUB_ID)
+                ->references(GroupCategorySubcategoryContract::FIELD_ID)
+                ->on(GroupCategorySubcategoryContract::TABLE_NAME)
+                ->onDelete('restrict');
             $table->timestamps();
         });
     }

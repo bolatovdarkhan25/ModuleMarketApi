@@ -18,6 +18,12 @@ class {{ class }} extends Migration
             $table->string('name');
             $table->decimal('price', 12, 2);
             $table->boolean('is_available')->default(true);
+            $table->foreignId('group_category_subcategory_id');
+
+            $table->foreign('group_category_subcategory_id')
+                ->references('id')
+                ->on('group_category_subcategories')
+                ->onDelete('restrict');
             $table->timestamps();
         });
     }
