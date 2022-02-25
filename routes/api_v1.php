@@ -17,14 +17,17 @@ use Laravel\Lumen\Routing\Router;
 
 $router->get('/', 'Controller@info');
 
-$router->group(['prefix' => 'goods'], function () use ($router) {
+$router->group(['prefix' => 'api/v1'], function () use ($router) {
+    $router->group(['prefix' => 'goods'], function () use ($router) {
 
-});
+    });
 
-$router->group(['prefix' => 'groups'], function () use ($router) {
-    $router->get('', 'GroupController@index');
-});
+    $router->group(['prefix' => 'groups'], function () use ($router) {
+        $router->get('', 'GroupController@index');
+    });
 
-$router->group(['prefix' => 'categories'], function () use ($router) {
-    $router->get('get-list-by-group-with-subcategories', 'CategoryController@getListByGroupIdWithSubcategories');
+    $router->group(['prefix' => 'categories'], function () use ($router) {
+        $router->get('get-list-by-group-with-subcategories', 'CategoryController@getListByGroupIdWithSubcategories');
+    });
+
 });

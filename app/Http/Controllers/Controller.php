@@ -30,6 +30,6 @@ class Controller extends BaseController
 
     public function info(): JsonResponse
     {
-        return response()->json(['version' => App::version(), 'welcome_message' => 'Welcome to Module Marketing']);
+        return response()->json(['version' => App::version(), 'welcome_message' => 'Welcome to Module Market Api']);
     }
 }

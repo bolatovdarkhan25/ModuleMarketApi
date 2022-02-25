@@ -17,9 +17,24 @@ class GroupController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @return JsonResponse
-     */
+     * @OA\Get(
+     *     path="/api/v1/groups",
+     *     summary = "Get groups list",
+     *     tags={"Groups"},
+     *     @OA\Response(
+     *         response="200",
+     *         description="Returns data"
+     *     ),
+     *     @OA\Response(
+     *         response="500",
+     *         description="Internal unhandled error",
+     *     ),
+     *     @OA\Response(
+     *         response="422",
+     *         description="Validation error",
+     *     )
+     * )
+     **/
     public function index(Request $request): JsonResponse
     {
         return $this->returnResponse([
