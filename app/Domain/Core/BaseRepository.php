@@ -2,7 +2,7 @@
 
 namespace App\Domain\Core;
 
-use App\Domain\Contracts\RepositoryInterface;
+use App\Domain\Contracts\RepositoryContract;
 use App\Domain\Core\Exceptions\RepositoryException;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 
-abstract class BaseRepository implements RepositoryInterface
+abstract class BaseRepository implements RepositoryContract
 {
     private Container $container;
 

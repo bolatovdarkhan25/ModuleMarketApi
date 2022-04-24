@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Domain\Contracts\Model\GroupContract;
+use App\Domain\Contracts\Entity\GroupContract;
 use App\Domain\Repositories\GroupRepository;
-use App\Models\System;
 use Illuminate\Database\Seeder;
 
 class GroupSeeder extends Seeder

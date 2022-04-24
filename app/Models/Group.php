@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Domain\Contracts\Model\GroupCategoryContract;
-use App\Domain\Contracts\Model\GroupContract;
+use App\Domain\Contracts\Entity\GroupCategoryContract;
+use App\Domain\Contracts\Entity\GroupContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Group extends Model
+class Group extends Model implements GroupContract
 {
     use HasFactory;
 

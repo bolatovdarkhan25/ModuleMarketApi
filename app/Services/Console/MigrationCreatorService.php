@@ -13,8 +13,7 @@ class MigrationCreatorService extends MigrationCreator
         $table = null,
         $create = false,
         string $stubType = '',
-        string $contract = '',
-        string $dataType = ''
+        string $contract = ''
     ): string {
         $this->ensureMigrationDoesntAlreadyExist($name, $path);
 
@@ -24,9 +23,7 @@ class MigrationCreatorService extends MigrationCreator
 
         $this->files->ensureDirectoryExists(dirname($path));
 
-        $this->files->put(
-            $path, $this->populateStub($name, $stub, $table, $stubType, $contract, $dataType)
-        );
+        $this->files->put($path, $this->populateStub($name, $stub, $table, $stubType, $contract));
 
         $this->firePostCreateHooks($table);
 
@@ -38,17 +35,14 @@ class MigrationCreatorService extends MigrationCreator
         $stub,
         $table,
         string $stubType = '',
-        string $contract = '',
-        string $dataType = ''
+        string $contract = ''
     ): string {
         $stub = str_replace(
             ['DummyClass', '{{ class }}', '{{class}}'],
             $this->getClassName($name), $stub
         );
 
-        $stub = str_replace(['{{ data_type }}'], $dataType, $stub);
-
-        if (in_array($stubType, ['common', 'good', 'char'])) {
+        if ($stubType === 'common') {
             if (! is_null($table)) {
                 $stub = str_replace(
                     ['DummyTable', '{{ table }}', '{{table}}'],

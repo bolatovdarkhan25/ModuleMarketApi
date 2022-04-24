@@ -1,8 +1,8 @@
 <?php
 
-use App\Domain\Contracts\Model\CategoryContract;
-use App\Domain\Contracts\Model\GroupCategoryContract;
-use App\Domain\Contracts\Model\GroupContract;
+use App\Domain\Contracts\Entity\CategoryContract;
+use App\Domain\Contracts\Entity\GroupCategoryContract;
+use App\Domain\Contracts\Entity\GroupContract;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

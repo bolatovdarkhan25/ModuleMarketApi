@@ -6,5 +6,7 @@ use Spatie\DataTransferObject\DataTransferObject;
 
 class GetListByGroupIdWithSubcategoriesRequestDTO extends DataTransferObject
 {
-    public int $groupId;
+    public int|null $groupId;
+
+    public int|null $key;
 }

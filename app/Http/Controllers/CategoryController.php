@@ -21,7 +21,7 @@ class CategoryController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/v1/categories/get-list-by-group-with-subcategories",
+     *     path="/api/v1/categories/get-list-with-groups",
      *     summary = "Get categories and subcategories list by group id",
      *     tags={"Categories"},
      *     @OA\Parameter(
@@ -49,9 +49,9 @@ class CategoryController extends Controller
      *
      * @throws UnknownProperties
      */
-    public function getListByGroupIdWithSubcategories(GetListByGroupIdWithSubcategoriesRequest $request): JsonResponse
+    public function getListWithGroups(GetListByGroupIdWithSubcategoriesRequest $request): JsonResponse
     {
-        $data = new GetListByGroupIdWithSubcategoriesRequestDTO(groupId: $request->query('group_id'));
+        $data = new GetListByGroupIdWithSubcategoriesRequestDTO($request->validated()); // TODO не подойдет эта библиотека, надо переделать, чтобы value был присвоен не var_name-у а varName-у
 
         return $this->returnResponse([
             'data'    => $this->categoryService->getListByGroupIdWithSubcategories($data),

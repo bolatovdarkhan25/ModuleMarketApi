@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Domain\Contracts\Model;
+namespace App\Domain\Contracts\Entity;
+
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 interface CategoryContract
 {
@@ -194,4 +196,8 @@ interface CategoryContract
         'Демонстрационные материалы',
         'Аксессуары',
     ];
+
+    public const GROUPS_RELATION = 'groups';
+
+    public function groups(): BelongsToMany;
 }

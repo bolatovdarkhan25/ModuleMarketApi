@@ -3,8 +3,6 @@
 namespace App\Console;
 
 use App\Console\Commands\ContractMakeCommand;
-use App\Console\Commands\CreateGoodCharacteristicsCommand;
-use App\Console\Commands\CreateGoodsModelsCommand;
 use App\Console\Commands\MigrationMakeCommand;
 use App\Console\Commands\ModelMakeCommand;
 use App\Console\Commands\RepositoryMakeCommand;
@@ -19,12 +17,10 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        CreateGoodsModelsCommand::class,
         ModelMakeCommand::class,
         ContractMakeCommand::class,
         RepositoryMakeCommand::class,
-        MigrationMakeCommand::class,
-        CreateGoodCharacteristicsCommand::class
+        MigrationMakeCommand::class
     ];
 
     /**

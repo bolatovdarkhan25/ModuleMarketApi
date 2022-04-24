@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Category;
 
-use App\Domain\Contracts\Model\GroupContract;
+use App\Domain\Contracts\Entity\GroupContract;
 use Illuminate\Validation\Rule;
 use JetBrains\PhpStorm\ArrayShape;
 use Pearl\RequestValidate\RequestAbstract;
@@ -14,15 +14,16 @@ class GetListByGroupIdWithSubcategoriesRequest extends RequestAbstract
      *
      * @return array
      */
-    #[ArrayShape(['group_id' => "string[]"])]
+//    #[ArrayShape(['group_id' => "string[]"])]
     public function rules(): array
     {
         return [
             'group_id' => [
                 'required',
                 'integer',
-                Rule::exists(GroupContract::TABLE_NAME, GroupContract::FIELD_ID)
-            ]
+//                Rule::exists(GroupContract::TABLE_NAME, GroupContract::FIELD_ID)
+            ],
+            'key' => ['integer']
         ];
     }
 }

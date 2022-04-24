@@ -3,7 +3,7 @@
 namespace DummyNamespace;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
-use App\Domain\Contracts\Model\DummyClassContract;
+use App\Domain\Contracts\Entity\DummyClassContract;
 
 class DummyClass extends Pivot
 {

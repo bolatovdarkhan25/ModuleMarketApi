@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Contracts\Model;
+namespace App\Domain\Contracts\Entity;
 
 interface GroupCategoryContract
 {

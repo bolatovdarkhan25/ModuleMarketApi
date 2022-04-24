@@ -2,7 +2,7 @@
 
 namespace App\Domain\Contracts;
 
-interface ServiceContract
+interface EntityCommonFieldsContract
 {
     public const FIELD_CREATED_AT = 'created_at';
     public const FIELD_UPDATED_AT = 'updated_at';

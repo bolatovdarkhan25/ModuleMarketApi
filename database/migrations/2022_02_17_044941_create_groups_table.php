@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Contracts\Model\GroupContract;
+use App\Domain\Contracts\Entity\GroupContract;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

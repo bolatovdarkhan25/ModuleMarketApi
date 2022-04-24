@@ -17,6 +17,6 @@ class CategoryService
 
     public function getListByGroupIdWithSubcategories(GetListByGroupIdWithSubcategoriesRequestDTO $data): EloquentCollection
     {
-        return $this->categoryRepository->getCategoriesAndSubcategoriesByGroup($data->groupId);
+        return $this->categoryRepository->getAllWithGroups();
     }
 }
